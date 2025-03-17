@@ -149,19 +149,25 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-6. Create database schema & seed it
+6. Create database schema
 
 ```
-php artisan migrate:refresh --seed
+php artisan migrate
 ```
 
-7. Serve your Laravel app (Laravel Valet as example):
+7. Seed the database
+
+```
+php artisan db:seed
+```
+
+8. Serve your Laravel app (Laravel Valet as example):
 
 ```
 valet link project
 ```
 
-8. Open served address in your browser.
+9. Open served address in your browser.
 
 ```
 http://project.test
