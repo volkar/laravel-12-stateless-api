@@ -26,7 +26,6 @@ Additionally, an album can include a `direct_access_slug` for direct access, eve
 -   Redis cache for all direct requests
 -   Cache invalidation in Observers
 -   Sharing for albums and their items (public, private, shared)
--   HTTP cache (Spatie Laravel Response Cache)
 -   Database operations via Dispatchers
 -   Internationalization based on Accept-Language header
 -   Soft deletes for users and albums

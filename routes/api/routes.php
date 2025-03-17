@@ -26,20 +26,17 @@ Route::get('/', fn() => new JsonResponse(
 
 Route::prefix('auth')->group(base_path(path: 'routes/api/auth/routesAuth.php'));
 
-// Public HTTP cached
+// Public
 
-Route::middleware([])->group(static function (): void {
+Route::middleware(['throttle:api-get'])->group(static function (): void {
     // User info with albums
     Route::get('/users/{user_slug}', ShowUserController::class)
-        ->middleware(['throttle:api-get'])
         ->name('users.show');
     // Album info
     Route::get('/albums/{user_slug}/{album_slug}', ShowAlbumBySlugsController::class)
-        ->middleware(['throttle:api-get'])
         ->name('albums.show');
     // Direct slug album info (bypass access settings)
     Route::get('/direct/{direct_access_slug}', ShowAlbumByDirectSlugController::class)
-        ->middleware(['throttle:api-get'])
         ->name('albums.direct');
 });
 

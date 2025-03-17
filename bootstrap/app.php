@@ -36,8 +36,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'verified' => App\Http\Middleware\EnsureEmailIsVerified::class,
-            'noCache' => Spatie\ResponseCache\Middlewares\DoNotCacheResponse::class,
-            'cacheResponse' => Spatie\ResponseCache\Middlewares\CacheResponse::class,
             'role' => App\Http\Middleware\Role::class,
             'auth.required' => AuthRequired::class,
             'auth.guest' => AuthGuest::class,
