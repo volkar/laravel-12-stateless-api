@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Middleware\AuthGuest;
 use App\Http\Middleware\AuthRequired;
+use App\Http\Middleware\CustomCors;
 use App\Http\Middleware\SetRequestedLocale;
 use App\Http\Responses\ErrorResponse;
 use Illuminate\Foundation\Application;
@@ -33,6 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ContentTypeOptions::class,
             CertificateTransparencyPolicy::class,
             SetRequestedLocale::class,
+            CustomCors::class,
         ]);
         $middleware->alias([
             'verified' => App\Http\Middleware\EnsureEmailIsVerified::class,

@@ -78,3 +78,9 @@ Route::middleware(['auth.required'])->group(static function (): void {
         ->middleware(['throttle:api-modify'])
         ->name('album.restore');
 });
+
+// Preflight routes
+
+Route::options('{any}', fn() => response()->noContent())->where('any', '.*')
+    ->middleware(['throttle:api-get'])
+    ->name('preflight');
