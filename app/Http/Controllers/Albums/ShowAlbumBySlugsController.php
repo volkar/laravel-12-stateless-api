@@ -6,8 +6,7 @@ namespace App\Http\Controllers\Albums;
 
 use App\Http\Resources\AlbumFullResource;
 use App\Http\Resources\UserResource;
-use App\Http\Responses\DataResponse;
-use App\Http\Responses\ErrorResponse;
+use App\Http\Responses\ApiResponse;
 use App\Models\User;
 use App\Services\CacheService;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ShowAlbumBySlugsController
 {
-    public function __invoke(string $userSlug, string $albumSlug): ErrorResponse|DataResponse
+    public function __invoke(string $userSlug, string $albumSlug): ApiResponse
     {
         // Get album
         $album = CacheService::getAlbumBySlugs($userSlug, $albumSlug);
@@ -31,9 +30,8 @@ final class ShowAlbumBySlugsController
 
         // If no album found or no user found or album is not accessible, return error response
         if (null === $album || null === $authorUser || false === $album->isAlbumAccessible($authorUser, $viewerUser)) {
-            return new ErrorResponse(
+            return ApiResponse::notFound(
                 message: __('albums.not_found'),
-                status: Response::HTTP_NOT_FOUND,
             );
         }
 
@@ -41,7 +39,7 @@ final class ShowAlbumBySlugsController
         $album['atlas'] = $album->filterAtlasForUser($authorUser, $viewerUser);
 
         // Return success response
-        return new DataResponse(
+        return ApiResponse::ok(
             data: [
                 'album' => new AlbumFullResource(resource: $album),
                 'user' => new UserResource(resource: $authorUser),

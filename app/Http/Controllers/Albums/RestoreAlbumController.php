@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Albums;
 
-use App\Http\Responses\ErrorResponse;
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use App\Jobs\Albums\RestoreAlbumJob;
 use App\Models\Album;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpFoundation\Response;
 
 final class RestoreAlbumController
 {
@@ -18,24 +16,22 @@ final class RestoreAlbumController
         private readonly Dispatcher $dispatcher,
     ) {}
 
-    public function __invoke(string $albumId): ErrorResponse|MessageResponse
+    public function __invoke(string $albumId): ApiResponse
     {
         // Get deleted album
         $album = Album::query()->where('id', $albumId)->onlyTrashed()->first();
 
         // Album not found, return error response
         if (null === $album) {
-            return new ErrorResponse(
+            return ApiResponse::notFound(
                 message: __('albums.not_found'),
-                status: Response::HTTP_NOT_FOUND,
             );
         }
 
         // Not allowed by AlbumPolicy, return error response
         if ( ! Gate::allows('restore', $album)) {
-            return new ErrorResponse(
+            return ApiResponse::forbidden(
                 message: __('albums.restore.failure'),
-                status: Response::HTTP_FORBIDDEN,
             );
         }
 
@@ -47,9 +43,8 @@ final class RestoreAlbumController
         );
 
         // Return success response
-        return new MessageResponse(
+        return ApiResponse::accepted(
             message: __('albums.restore.success'),
-            status: Response::HTTP_ACCEPTED,
         );
     }
 }

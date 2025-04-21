@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 
 final class LogoutController
 {
-    public function __invoke(): MessageResponse
+    public function __invoke(): ApiResponse
     {
         // Get user from TokenAuthGuard
         /** @var \App\Models\User|null */
@@ -21,7 +21,7 @@ final class LogoutController
         }
 
         // Return success response
-        return new MessageResponse(
+        return ApiResponse::ok(
             message: __('auth.logout.success'),
         );
     }

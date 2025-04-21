@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Http\Responses\ErrorResponse;
+use App\Http\Responses\ApiResponse;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ final class AuthRequired
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response|ErrorResponse
+    public function handle(Request $request, Closure $next): Response|ApiResponse
     {
         // If user is authenticated, pass the request to the next middleware
         if (Auth::check()) {
@@ -25,9 +25,8 @@ final class AuthRequired
         }
 
         // If user is not authenticated, return error response
-        return new ErrorResponse(
+        return ApiResponse::unauthorized(
             message: __('auth.unauthenticated'),
-            status: Response::HTTP_UNAUTHORIZED,
         );
     }
 }

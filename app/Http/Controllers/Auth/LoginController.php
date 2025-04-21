@@ -6,14 +6,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\UserSelfResource;
-use App\Http\Responses\DataResponse;
+use App\Http\Responses\ApiResponse;
 use App\Models\AuthToken;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 final class LoginController
 {
-    public function __invoke(LoginRequest $request): DataResponse
+    public function __invoke(LoginRequest $request): ApiResponse
     {
         // Rate limiter and Auth::attempt is done in LoginRequest
         $request->authenticate();
@@ -34,12 +33,11 @@ final class LoginController
         }
 
         // Return success response with token and user data
-        return new DataResponse(
+        return ApiResponse::ok(
             data: [
                 'token' => $token->generateTokenString(),
                 'user' => new UserSelfResource($user),
             ],
-            status: Response::HTTP_OK,
         );
     }
 }

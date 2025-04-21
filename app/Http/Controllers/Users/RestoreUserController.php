@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Users;
 
-use App\Http\Responses\ErrorResponse;
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use App\Jobs\Albums\RestoreAlbumJob;
 use App\Jobs\Users\RestoreUserJob;
 use App\Models\User;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpFoundation\Response;
 
 final class RestoreUserController
 {
@@ -19,24 +17,22 @@ final class RestoreUserController
         private readonly Dispatcher $dispatcher,
     ) {}
 
-    public function __invoke(string $userId): ErrorResponse|MessageResponse
+    public function __invoke(string $userId): ApiResponse
     {
         // Get deleted user
         $user = User::query()->where('id', $userId)->onlyTrashed()->first();
 
         // User not found, return error response
         if (null === $user) {
-            return new ErrorResponse(
+            return ApiResponse::notFound(
                 message: __('users.not_found'),
-                status: Response::HTTP_FORBIDDEN,
             );
         }
 
         // Not allowed by UserPolicy, return error response
         if ( ! Gate::allows('restore', $user)) {
-            return new ErrorResponse(
+            return ApiResponse::forbidden(
                 message: __('users.restore.failure'),
-                status: Response::HTTP_FORBIDDEN,
             );
         }
 
@@ -57,9 +53,8 @@ final class RestoreUserController
         });
 
         // Return success response
-        return new MessageResponse(
+        return ApiResponse::accepted(
             message: __('users.restore.success'),
-            status: Response::HTTP_ACCEPTED,
         );
     }
 }

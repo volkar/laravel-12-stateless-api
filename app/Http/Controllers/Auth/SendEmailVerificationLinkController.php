@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 
 final class SendEmailVerificationLinkController
 {
-    public function __invoke(): MessageResponse
+    public function __invoke(): ApiResponse
     {
         // Get user from TokenAuthGuard
         /** @var \App\Models\User $user */
@@ -17,7 +17,7 @@ final class SendEmailVerificationLinkController
 
         // If user has already verified email return message
         if ($user->hasVerifiedEmail()) {
-            return new MessageResponse(
+            return ApiResponse::ok(
                 message: __('auth.verified.already'),
             );
         }
@@ -26,7 +26,7 @@ final class SendEmailVerificationLinkController
         $user->sendEmailVerificationNotification();
 
         // Return success message
-        return new MessageResponse(
+        return ApiResponse::ok(
             message: __('auth.verified.sent'),
         );
     }

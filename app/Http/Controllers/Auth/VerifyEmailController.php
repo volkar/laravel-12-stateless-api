@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 final class VerifyEmailController
 {
-    public function __invoke(EmailVerificationRequest $request): MessageResponse
+    public function __invoke(EmailVerificationRequest $request): ApiResponse
     {
         // Get user from TokenAuthGuard
         /** @var \App\Models\User $user */
@@ -18,7 +18,7 @@ final class VerifyEmailController
 
         // If user has already verified email return message
         if ($user->hasVerifiedEmail()) {
-            return new MessageResponse(
+            return ApiResponse::ok(
                 message: __('auth.verified.already'),
             );
         }
@@ -29,7 +29,7 @@ final class VerifyEmailController
         }
 
         // Return success message
-        return new MessageResponse(
+        return ApiResponse::ok(
             message: __('auth.verified.success'),
         );
     }

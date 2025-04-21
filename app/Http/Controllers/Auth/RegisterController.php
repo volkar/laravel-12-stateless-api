@@ -8,16 +8,15 @@ use App\Enums\RoleEnum;
 use App\Enums\ThemeEnum;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserSelfResource;
-use App\Http\Responses\DataResponse;
+use App\Http\Responses\ApiResponse;
 use App\Models\AuthToken;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 final class RegisterController
 {
-    public function __invoke(RegisterRequest $request): DataResponse
+    public function __invoke(RegisterRequest $request): ApiResponse
     {
         // Create user
         /** @var User */
@@ -41,12 +40,11 @@ final class RegisterController
         ]);
 
         // Return success response
-        return new DataResponse(
+        return ApiResponse::ok(
             data: [
                 'token' => $token->generateTokenString(),
                 'user' => new UserSelfResource($user),
             ],
-            status: Response::HTTP_OK,
         );
     }
 }

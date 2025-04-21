@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Albums;
 
 use App\Http\Resources\AlbumFullResource;
-use App\Http\Responses\DataResponse;
-use App\Http\Responses\ErrorResponse;
+use App\Http\Responses\ApiResponse;
 use App\Models\User;
 use App\Services\CacheService;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 final class ShowAlbumByDirectSlugController
 {
-    public function __invoke(string $directAccessSlug): ErrorResponse|DataResponse
+    public function __invoke(string $directAccessSlug): ApiResponse
     {
         // Get album
         $cachedAlbum = CacheService::getAlbumDirect($directAccessSlug);
@@ -26,9 +24,8 @@ final class ShowAlbumByDirectSlugController
 
         // If no album found or no user found, return error response
         if (null === $cachedAlbum || null === $authorUser) {
-            return new ErrorResponse(
+            return ApiResponse::notFound(
                 message: __('albums.not_found'),
-                status: Response::HTTP_NOT_FOUND,
             );
         }
 
@@ -40,10 +37,8 @@ final class ShowAlbumByDirectSlugController
         $cachedAlbum['atlas'] = $cachedAlbum->filterAtlasForUser($authorUser, $viewerUser);
 
         // Return success response
-        return new DataResponse(
-            data: new AlbumFullResource(
-                resource: $cachedAlbum,
-            ),
+        return ApiResponse::ok(
+            data: new AlbumFullResource(resource: $cachedAlbum),
         );
     }
 }

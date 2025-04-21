@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\PasswordResetLinkRequest;
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
 final class SendPasswordResetLinkController
 {
-    public function __invoke(PasswordResetLinkRequest $request): MessageResponse
+    public function __invoke(PasswordResetLinkRequest $request): ApiResponse
     {
         // Send password reset link
         $status = Password::sendResetLink(
@@ -26,7 +26,7 @@ final class SendPasswordResetLinkController
         }
 
         // Return success response
-        return new MessageResponse(
+        return ApiResponse::ok(
             message: __($status),
         );
     }

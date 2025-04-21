@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\NewPasswordRequest;
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 final class PasswordResetByTokenController
 {
-    public function __invoke(NewPasswordRequest $request): MessageResponse
+    public function __invoke(NewPasswordRequest $request): ApiResponse
     {
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
@@ -38,7 +38,7 @@ final class PasswordResetByTokenController
         }
 
         // Return success response
-        return new MessageResponse(
+        return ApiResponse::ok(
             message: __($status),
         );
     }

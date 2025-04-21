@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Http\Responses\ErrorResponse;
+use App\Http\Responses\ApiResponse;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,13 +17,12 @@ final class AuthGuest
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): ErrorResponse|Response
+    public function handle(Request $request, Closure $next): ApiResponse|Response
     {
         // If the user is authenticated, return a forbidden response
         if ( ! Auth::guest()) {
-            return new ErrorResponse(
+            return ApiResponse::forbidden(
                 message: __('auth.authenticated'),
-                status: Response::HTTP_FORBIDDEN,
             );
         }
 

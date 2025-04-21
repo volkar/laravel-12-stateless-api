@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Albums;
 
 use App\Http\Requests\Albums\CreateAlbumRequest;
-use App\Http\Responses\ErrorResponse;
-use App\Http\Responses\MessageResponse;
+use App\Http\Responses\ApiResponse;
 use App\Jobs\Albums\CreateAlbumJob;
 use App\Models\Album;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpFoundation\Response;
 
 final class CreateAlbumController
 {
@@ -19,13 +17,12 @@ final class CreateAlbumController
         private readonly Dispatcher $dispatcher,
     ) {}
 
-    public function __invoke(CreateAlbumRequest $request): ErrorResponse|MessageResponse
+    public function __invoke(CreateAlbumRequest $request): ApiResponse
     {
         // Not allowed by AlbumPolicy, return error response
         if ( ! Gate::allows('create', Album::class)) {
-            return new ErrorResponse(
+            return ApiResponse::forbidden(
                 message: __('albums.create.failure'),
-                status: Response::HTTP_FORBIDDEN,
             );
         }
 
@@ -37,9 +34,8 @@ final class CreateAlbumController
         );
 
         // Return success response
-        return new MessageResponse(
+        return ApiResponse::accepted(
             message: __('albums.create.success'),
-            status: Response::HTTP_ACCEPTED,
         );
     }
 }

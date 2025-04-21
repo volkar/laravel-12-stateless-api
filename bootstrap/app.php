@@ -6,11 +6,13 @@ use App\Http\Middleware\AuthGuest;
 use App\Http\Middleware\AuthRequired;
 use App\Http\Middleware\CustomCors;
 use App\Http\Middleware\SetRequestedLocale;
-use App\Http\Responses\ErrorResponse;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Treblle\SecurityHeaders\Http\Middleware\CertificateTransparencyPolicy;
 use Treblle\SecurityHeaders\Http\Middleware\ContentTypeOptions;
@@ -44,9 +46,15 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(fn(HttpException $e, Request $request): ErrorResponse => new ErrorResponse(
+        $exceptions->render(fn(HttpException $e, Request $request): ApiResponse => new ApiResponse(
             message: $e->getMessage(),
-            status: $e->getStatusCode(),
+            code: $e->getStatusCode(),
+        ));
+        $exceptions->render(fn(ValidationException $e, Request $request): ApiResponse => new ApiResponse(
+            message: $e->getMessage(),
+            code: Response::HTTP_UNPROCESSABLE_ENTITY,
+            data: ['errors' => $e->errors()],
         ));
         $exceptions->shouldRenderJsonWhen(fn() => true);
-    })->create();
+    })
+    ->create();
