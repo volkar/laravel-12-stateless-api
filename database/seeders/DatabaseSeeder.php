@@ -47,7 +47,6 @@ final class DatabaseSeeder extends Seeder
             ['type' => 'text', 'src' => 'This text is private.', 'meta' => ['access' => 'private']],
             ['type' => 'text', 'src' => 'This text visible only for Malenia by email.', 'meta' => ['access' => 'shared', 'shared_for' => ['malenia@example.com']]],
             ['type' => 'text', 'src' => 'This text visible for users in Maliketh Friends group.', 'meta' => ['access' => 'shared', 'shared_for' => ['friends']]],
-            ['type' => 'img', 'src' => 'https://github.com/volkar/nuxt3-ui-sanctum-breeze-auth/raw/main/prev-4.jpg?raw=true'],
             ['type' => 'title', 'src' => 'Second chapter.'],
             ['type' => 'text', 'src' => 'The woods are lovely, dark and deep, but I have promises to keep, and miles to go before I sleep, and miles to go before I sleep.',],
             ['type' => 'text', 'src' => 'In the midway of this our mortal life, I found me in a gloomy wood, astray gone from the path direct: and e\'en to tell it were no easy task, how savage wild that forest, how robust and rough its growth, which to remember only, my dismay renews, in bitterness not far from death. Yet to discourse of what there good befell, all else will I relate discover\'d there. How first I enter\'d it I scarce can say, such sleepy dullness in that instant weigh\'d my senses down, when the true path I left, but when a mountain\'s foot I reach\'d, where clos\'d the valley, that had pierc\'d my heart with dread, I look\'d aloft, and saw his shoulders broad already vested with that planet\'s beam, who leads all wanderers safe through every way.',],
@@ -61,7 +60,7 @@ final class DatabaseSeeder extends Seeder
             'theme' => ThemeEnum::DARK->value,
             'access' => AccessEnum::PRIVATE->value,
             'shared_for' => [],
-            'atlas' => $atlasTest,
+            'atlas' => [['type' => 'img', 'src' => 'https://images.pexels.com/photos/2187605/pexels-photo-2187605.jpeg?auto=compress&cs=tinysrgb&w=1600'] , ...$atlasTest],
             'date_at' => '2020-01-11 12:13:14',
             'user_id' => $userMaliketh->id,
         ]);
@@ -74,7 +73,7 @@ final class DatabaseSeeder extends Seeder
             'theme' => ThemeEnum::LIGHT->value,
             'access' => AccessEnum::PUBLIC->value,
             'shared_for' => [],
-            'atlas' => $atlasTest,
+            'atlas' => [['type' => 'img', 'src' => 'https://images.pexels.com/photos/1325837/pexels-photo-1325837.jpeg?auto=compress&cs=tinysrgb&w=1600'] , ...$atlasTest],
             'date_at' => '2020-02-11 12:13:14',
             'user_id' => $userMaliketh->id,
         ]);
@@ -87,7 +86,7 @@ final class DatabaseSeeder extends Seeder
             'theme' => ThemeEnum::LIGHT->value,
             'access' => AccessEnum::SHARED->value,
             'shared_for' => ['malenia@example.com'],
-            'atlas' => $atlasTest,
+            'atlas' => [['type' => 'img', 'src' => 'https://images.pexels.com/photos/1191377/pexels-photo-1191377.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'] , ...$atlasTest],
             'date_at' => '2020-03-11 12:13:14',
             'user_id' => $userMaliketh->id,
         ]);
@@ -100,7 +99,7 @@ final class DatabaseSeeder extends Seeder
             'theme' => ThemeEnum::DARK->value,
             'access' => AccessEnum::SHARED->value,
             'shared_for' => ['friends'],
-            'atlas' => $atlasTest,
+            'atlas' => [['type' => 'img', 'src' => 'https://images.pexels.com/photos/1710001/pexels-photo-1710001.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'] , ...$atlasTest],
             'date_at' => '2020-04-11 12:13:14',
             'user_id' => $userMaliketh->id,
         ]);

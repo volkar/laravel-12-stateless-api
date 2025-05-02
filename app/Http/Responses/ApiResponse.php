@@ -70,7 +70,7 @@ final class ApiResponse implements Responsable
     {
         $payload = [
             'success' => ($this->code >= 200 && $this->code < 300),
-            'code' => $this->code,
+            'status' => $this->code,
         ];
 
         if ($this->message) {
