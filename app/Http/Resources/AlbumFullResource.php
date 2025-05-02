@@ -17,6 +17,7 @@ final class AlbumFullResource extends JsonResource
             'name' => $this->name,
             'theme' => $this->theme,
             'atlas' => $this->atlas,
+            'slug' => $this->slug,
             'date' => new DateResource(
                 resource: $this->date_at,
             ),
