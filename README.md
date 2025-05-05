@@ -1,4 +1,5 @@
-# Laravel 12 Stateless API Project
+# Tesseract API
+### Laravel 12 Stateless API Project
 
 This project was created for demo purposes and to learn by implementing Laravel's best practices.
 

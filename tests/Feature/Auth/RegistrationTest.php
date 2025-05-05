@@ -15,6 +15,6 @@ test('New users can register', function (): void {
 
     $response->assertStatus(Response::HTTP_OK);
     $response->assertJsonStructure([
-        'token',
+        'data' => ['token'],
     ]);
 });

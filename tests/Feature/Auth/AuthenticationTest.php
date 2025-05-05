@@ -15,7 +15,7 @@ test('Users can authenticate using the login screen', function (): void {
         'email' => $user->email,
         'password' => 'password',
     ])->assertStatus(status: Response::HTTP_OK)
-        ->assertJsonStructure(['token']);
+        ->assertJsonStructure(['data' => ['token']]);
 });
 
 test('Users can not authenticate with invalid password', function (): void {

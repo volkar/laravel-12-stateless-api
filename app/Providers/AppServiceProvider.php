@@ -35,7 +35,7 @@ final class AppServiceProvider extends ServiceProvider
                 throw new InvalidArgumentException('Notifiable must be an instance of User');
             }
             /** @var string */
-            $urlParams = "/password-reset/{$token}?email={$notifiable->getEmailForPasswordReset()}";
+            $urlParams = "/password-reset/{$token}/{$notifiable->getEmailForPasswordReset()}";
             return $frontendUrl . $urlParams;
         });
 
@@ -53,7 +53,7 @@ final class AppServiceProvider extends ServiceProvider
                 ],
             );
 
-            return $frontendUrl . "/email-verification/{$verificationUrl}";
+            return $frontendUrl . "/email-verification/" . urlencode($verificationUrl);
         });
 
         Auth::extend('token_guard', function (Application $app, string $name, array $config) {
